@@ -95,6 +95,7 @@ for FILE in "${FILES[@]}"; do
     fpm -s dir -t deb -n croc -v "$VERSION" -a "$MAPPED_ARCH" \
       -p "${DEB_FILE}" \
       --description "Easily and securely send things from one computer to another" \
+      --license "MIT License"
       --url "https://github.com/schollz/croc" \
       --maintainer "Amar Tukimin <amartukiminj@gmail.com>" \
       --prefix /usr/local/bin \

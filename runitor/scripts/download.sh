@@ -66,6 +66,7 @@ for FILE in "${FILES[@]}"; do
         fpm -s dir -t deb -n runitor -v "$VERSION" -a "$ARCH" \
             -p "${DEB_FILE}" \
             --description "A command runner with healthchecks.io integration " \
+            --license "BSD Zero Clause License"
             --url "https://github.com/bdd/runitor" \
             --maintainer "Amar Tukimin <amartukiminj@gmail.com>" \
             --prefix /usr/local/bin \
