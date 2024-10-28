@@ -3,6 +3,7 @@
 ### List of Packages:
 - [restic](https://github.com/restic/restic)
 - [runitor](https://github.com/bdd/runitor)
+- [croc](https://github.com/schollz/croc)
 
 # Usage
 ```bash
