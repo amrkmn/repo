@@ -84,6 +84,7 @@ for FILE in "${FILES[@]}"; do
     fpm -s dir -t deb -n restic -v "$VERSION" -a "$ARCH" \
       -p "${DEB_FILE}" \
       --description "Fast, secure, efficient backup program" \
+      --license "BSD 2-Clause License" \
       --url "https://restic.net/" \
       --maintainer "Amar Tukimin <amartukiminj@gmail.com>" \
       --prefix /usr/local/bin \
