@@ -10,8 +10,8 @@ mkdir -p "$RUNITOR_DIR"
 echo -e "runitor directory set to $RUNITOR_DIR\n"
 
 # Get the latest version from GitHub API
-# VERSION=$(curl -s https://api.github.com/repos/bdd/runitor/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-VERSION=1.3.0
+VERSION=$(curl -s https://api.github.com/repos/bdd/runitor/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+# VERSION=1.3.0
 
 if [ -z "$VERSION" ]; then
     echo "failed to get the version."
@@ -66,7 +66,7 @@ for FILE in "${FILES[@]}"; do
         fpm -s dir -t deb -n runitor -v "$VERSION" -a "$ARCH" \
             -p "${DEB_FILE}" \
             --description "A command runner with healthchecks.io integration " \
-            --license "BSD Zero Clause License"
+            --license "BSD Zero Clause License" \
             --url "https://github.com/bdd/runitor" \
             --maintainer "Amar Tukimin <amartukiminj@gmail.com>" \
             --prefix /usr/local/bin \

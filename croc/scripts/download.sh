@@ -10,7 +10,7 @@ mkdir -p "$CROC_DIR"
 echo -e "croc directory set to $CROC_DIR\n"
 
 # Define the version for Croc
-VERSION="10.0.13"
+# VERSION=$(curl -s https://api.github.com/repos/schollz/croc/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
 echo "croc version: $VERSION"
 
 # Create a temporary directory for downloading files
@@ -95,7 +95,7 @@ for FILE in "${FILES[@]}"; do
     fpm -s dir -t deb -n croc -v "$VERSION" -a "$MAPPED_ARCH" \
       -p "${DEB_FILE}" \
       --description "Easily and securely send things from one computer to another" \
-      --license "MIT License"
+      --license "MIT License" \
       --url "https://github.com/schollz/croc" \
       --maintainer "Amar Tukimin <amartukiminj@gmail.com>" \
       --prefix /usr/local/bin \
