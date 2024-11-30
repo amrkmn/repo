@@ -1,84 +1,92 @@
 #!/bin/bash
 
-# Set the script directory
+# Constants
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 ROOT_DIR=$(dirname "$SCRIPT_DIR")
-
-# Define the runitor directory
 RUNITOR_DIR="${ROOT_DIR}/data"
-mkdir -p "$RUNITOR_DIR"
-echo -e "runitor directory set to $RUNITOR_DIR\n"
+GITHUB_REPO="https://api.github.com/repos/bdd/runitor/releases/latest"
 
-# Get the latest version from GitHub API
-VERSION=$(curl -s https://api.github.com/repos/bdd/runitor/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-# VERSION=1.3.0
+# Functions
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+}
 
-if [ -z "$VERSION" ]; then
-    echo "failed to get the version."
+error() {
+    log "ERROR: $1" >&2
     exit 1
+}
+
+download_file() {
+    local file=$1
+    local url=$2
+    local dest=$3
+
+    log "Downloading $file..."
+    curl -L --no-progress-meter -o "$dest" "$url"
+    if [ $? -ne 0 ]; then
+        error "Failed to download $file from $url"
+    fi
+    log "Download completed: $file"
+}
+
+create_deb_package() {
+    local file=$1
+    local version=$2
+    local arch=$3
+    local dest_binary="/usr/local/bin/runitor"
+    local deb_file="${RUNITOR_DIR}/runitor_${version}_${arch}.deb"
+
+    if [ -f "$deb_file" ]; then
+        log "DEB file already exists. Skipping download and packaging for $file"
+    else
+        log "Creating DEB package for $file..."
+        URL="https://github.com/bdd/runitor/releases/download/v${version}/${file}"
+        download_file "$file" "$URL" "${TEMP_DIR}/${file}"
+
+        fpm -s dir -t deb -n runitor -v "$version" -a "$arch" \
+            -p "${deb_file}" \
+            --description "A command runner with healthchecks.io integration" \
+            --license "BSD Zero Clause License" \
+            --url "https://github.com/bdd/runitor" \
+            --maintainer "Amar Tukimin <amartukiminj@gmail.com>" \
+            --prefix /usr/local/bin \
+            --after-install <(echo "chmod +x ${dest_binary}") \
+            "${TEMP_DIR}/${file}=runitor"
+
+        if [ $? -ne 0 ]; then
+            error "Failed to create DEB package for $file"
+        fi
+        log "DEB package created: $deb_file"
+    fi
+}
+
+# Main script logic
+log "Setting runitor directory to $RUNITOR_DIR"
+mkdir -p "$RUNITOR_DIR"
+
+log "Getting latest version from GitHub API"
+VERSION=$(curl -s "$GITHUB_REPO" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+if [ -z "$VERSION" ]; then
+    error "Failed to get the version."
 fi
 
-echo "version detected: $VERSION"
+log "Version detected: $VERSION"
 
-# Create a temporary directory for downloading files
 TEMP_DIR=$(mktemp -d)
-echo -e "temporary directory created at $TEMP_DIR\n"
+log "Temporary directory created at $TEMP_DIR"
 
-# List of Runitor files to download
 FILES=(
     "runitor-v${VERSION}-linux-amd64"
     "runitor-v${VERSION}-linux-arm"
     "runitor-v${VERSION}-linux-arm64"
 )
 
-# Function to download a file
-download_file() {
-    local file=$1
-    local url=$2
-    local dest=$3
-
-    echo -e "downloading $file..."
-
-    # Download the file
-    curl -L --no-progress-meter -o "$dest" "$url"
-
-    echo "download completed: $file"
-}
-
-# Download and process all files
 for FILE in "${FILES[@]}"; do
-    TEMP_FILE="${TEMP_DIR}/${FILE}"
-    ARCH=$(echo "$FILE" | sed -E 's/.*linux-([^\.]+).*/\1/')
-
-    if [ -f "${RUNITOR_DIR}/runitor_${VERSION}_${ARCH}.deb" ]; then
-        echo -e "deb file already exists. skipping download and packaging for ${FILE}\n"
-    else
-        URL="https://github.com/bdd/runitor/releases/download/v${VERSION}/${FILE}"
-
-        # Download the file
-        download_file "$FILE" "$URL" "$TEMP_FILE"
-
-        # Set variables for fpm
-        DEST_BINARY="/usr/local/bin/runitor"
-        DEB_FILE="${RUNITOR_DIR}/runitor_${VERSION}_${ARCH}.deb"
-
-        # Use fpm to build the .deb package and specify output location
-        fpm -s dir -t deb -n runitor -v "$VERSION" -a "$ARCH" \
-            -p "${DEB_FILE}" \
-            --description "A command runner with healthchecks.io integration " \
-            --license "BSD Zero Clause License" \
-            --url "https://github.com/bdd/runitor" \
-            --maintainer "Amar Tukimin <amartukiminj@gmail.com>" \
-            --prefix /usr/local/bin \
-            --after-install <(echo "chmod +x ${DEST_BINARY}") \
-            "$TEMP_FILE=runitor"
-
-        echo -e "deb package created: $DEB_FILE\n"
-    fi
+    create_deb_package "$FILE" "$VERSION" "$(echo "$FILE" | sed -E 's/.*linux-([^\.]+).*/\1/')"
 done
 
-# Clean up temporary directory
+log "Cleaning up temporary directory"
 rm -rf "$TEMP_DIR"
-echo -e "temporary directory cleaned up."
+log "Temporary directory cleaned up."
 
-echo "all linux-related files downloaded, processed, and packaged."
+log "All linux-related files downloaded, processed, and packaged."
