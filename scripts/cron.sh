@@ -34,8 +34,8 @@ echo "Running check.sh to detect package updates..."
 bash "$CHECK_SCRIPT"
 
 # Check if there are any updates
-if [[ -s "$UPDATED_FILE" ]]; then
-  echo "Updates detected. Running update-repo.sh..."
+if [[ -s "$UPDATES_FILE" ]]; then
+  echo "Updates detected. Running update.sh..."
   bash "$UPDATE_SCRIPT"
 else
   echo "No updates detected. Skipping repository update."

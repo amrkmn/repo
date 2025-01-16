@@ -55,9 +55,17 @@ is_repo_published() {
 echo "Adding updated packages to aptly repository..."
 updated=false
 for PACKAGE in "${UPDATES_PACKAGES[@]}"; do
-  if [[ -d "$BASE_DIR/packages/$PACKAGE/data" ]]; then
+  DATA_DIR="$BASE_DIR/packages/$PACKAGE/data"
+
+  if [[ -d "$DATA_DIR" ]]; then
     add_to_aptly "$PACKAGE"
     updated=true
+
+    # Clear the data folder to save space
+    echo "Clearing data folder for $PACKAGE..."
+    rm -rf "$DATA_DIR"/* || {
+      echo "Warning: Failed to clear data folder for $PACKAGE."
+    }
   else
     echo "No data directory found for $PACKAGE. Skipping..."
   fi
