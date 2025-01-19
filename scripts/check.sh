@@ -12,6 +12,7 @@ declare -A packages=(
   ["croc"]="https://api.github.com/repos/schollz/croc/releases/latest"
   ["regclient"]="https://api.github.com/repos/regclient/regclient/releases/latest"
   ["wgcf"]="https://api.github.com/repos/ViRb3/wgcf/releases/latest"
+  ["yt-dlp"]="https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest"
 )
 
 # Read current versions into an associative array

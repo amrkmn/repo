@@ -6,6 +6,7 @@
 - [croc](https://github.com/schollz/croc)
 - [regclient](https://github.com/regclient/regclient)
 - [wgcf](https://github.com/ViRb3/wgcf)
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp)
 
 # Usage
 ```bash
