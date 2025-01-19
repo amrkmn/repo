@@ -63,7 +63,7 @@ create_deb_package() {
             --maintainer "Amar Tukimin <amartukiminj@gmail.com>" \
             --prefix /usr/local/bin \
             --after-install <(echo "chmod +x ${dest_binary}") \
-            "${TEMP_DIR}/${file}=${dest_binary}"
+            "${TEMP_DIR}/${file}=yt-dlp"
 
         if [ $? -ne 0 ]; then
             error "Failed to create DEB package for $file"
