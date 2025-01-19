@@ -57,7 +57,7 @@ create_deb_package() {
 
         fpm -s dir -t deb -n yt-dlp -v "$version" -a "$arch" \
             -p "$deb_file" \
-            --description "Command-line program to download videos from YouTube and other sites" \
+            --description "A feature-rich command-line audio/video downloader" \
             --license "Unlicense" \
             --url "https://github.com/yt-dlp/yt-dlp" \
             --maintainer "Amar Tukimin <amartukiminj@gmail.com>" \
