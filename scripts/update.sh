@@ -43,7 +43,7 @@ done
 add_to_aptly() {
   local pkg=$1
   echo "Adding $pkg packages to aptly repository..."
-  aptly repo add apt "$BASE_DIR/packages/$pkg/data"
+  aptly repo add -force-replace apt "$BASE_DIR/packages/$pkg/data"
 }
 
 # Check if the Aptly repo is already published
@@ -75,7 +75,7 @@ done
 if $updated; then
   if is_repo_published; then
     echo "Repository already published. Updating published repository..."
-    aptly publish update stable filesystem:repo:apt
+    aptly publish update -force-overwrite stable filesystem:repo:apt
   else
     echo "Publishing new repository..."
     aptly publish repo apt filesystem:repo:apt
