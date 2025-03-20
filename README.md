@@ -10,7 +10,7 @@
 
 # Usage
 ```bash
-curl -fsSL https://repo.amar.kim/public.key | sudo gpg --dearmor -o /etc/apt/keyrings/amrkmn.gpg
-echo "deb [signed-by=/etc/apt/keyrings/amrkmn.gpg] https://repo.amar.kim/apt stable main" | sudo tee /etc/apt/sources.list.d/amrkmn.list >/dev/null
+sudo curl -fsSL https://repo.amar.kim/public.key -o /etc/apt/keyrings/amrkmn.asc
+echo "deb [signed-by=/etc/apt/keyrings/amrkmn.asc] https://repo.amar.kim/apt stable main" | sudo tee /etc/apt/sources.list.d/amrkmn.list >/dev/null
 sudo apt update
 ```
