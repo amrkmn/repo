@@ -11,6 +11,6 @@
 # Usage
 ```bash
 sudo curl -fsSL https://repo.amar.kim/public.key -o /etc/apt/keyrings/amrkmn.asc
-echo "deb [signed-by=/etc/apt/keyrings/amrkmn.asc] https://repo.amar.kim/apt stable main" | sudo tee /etc/apt/sources.list.d/amrkmn.list >/dev/null
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/amrkmn.asc] https://repo.amar.kim/apt stable main" | sudo tee /etc/apt/sources.list.d/amrkmn.list >/dev/null
 sudo apt update
 ```
