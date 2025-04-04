@@ -81,6 +81,10 @@ if $updated; then
     aptly publish repo apt filesystem:repo:apt
   fi
   echo "Repository updated and published."
+
+  # Sync to Cloudflare R2
+  rclone sync /var/www/html/repo r2:repo
+  echo "Repository synced to Cloudflare R2"
 else
   echo "No updates were found. Repository not modified."
 fi

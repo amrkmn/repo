@@ -4,7 +4,8 @@
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 ROOT_DIR=$(dirname "$SCRIPT_DIR")
 REGCLIENT_DIR="${ROOT_DIR}/data"
-GITHUB_REPO="https://api.github.com/repos/regclient/regclient/releases/latest"
+#GITHUB_REPO="https://api.github.com/repos/regclient/regclient/releases/latest"
+GITHUB_REPO="https://ungh.cc/repos/regclient/regclient/releases/latest"
 
 # Functions
 log() {
@@ -86,7 +87,8 @@ log "Setting Regclient directory to $REGCLIENT_DIR"
 mkdir -p "$REGCLIENT_DIR"
 
 log "Getting latest version from GitHub API"
-VERSION=$(curl -s "$GITHUB_REPO" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+#VERSION=$(curl -s "$GITHUB_REPO" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+VERSION=$(curl -s "$GITHUB_REPO" | grep '"tag":' | sed -E 's/.*"v([^"]+)".*/\1/')
 if [ -z "$VERSION" ]; then
     error "Failed to get the version."
 fi
