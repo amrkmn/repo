@@ -41,7 +41,7 @@ create_deb_package() {
         log "DEB file already exists. Skipping download and packaging for $file"
     else
         log "Creating DEB package for $file..."
-        URL="https://github.com/bdd/runitor/releases/download/v${version}/${file}"
+        URL="https://gh-v6.com/bdd/runitor/releases/download/v${version}/${file}"
         download_file "$file" "$URL" "${TEMP_DIR}/${file}"
 
         fpm -s dir -t deb -n runitor -v "$version" -a "$arch" \

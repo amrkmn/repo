@@ -53,7 +53,7 @@ create_deb_package() {
         log "DEB file already exists. Skipping download and packaging for $file"
     else
         log "Creating DEB package for $file..."
-        URL="https://github.com/yt-dlp/yt-dlp/releases/latest/download/${file}"
+        URL="https://gh-v6.com/yt-dlp/yt-dlp/releases/download/${version}/${file}"
         download_file "$file" "$URL" "${TEMP_DIR}/${file}"
 
         fpm -s dir -t deb -n yt-dlp -v "$version" -a "$arch" \

@@ -1,6 +1,6 @@
-wgcf=2.2.25
+wgcf=2.2.26
 restic=0.18.0
 croc=10.2.2
 yt-dlp=2025.03.31
 runitor=1.3.0-build.5
-regclient=0.8.2
+regclient=0.8.3
