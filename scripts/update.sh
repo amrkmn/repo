@@ -78,7 +78,7 @@ if $updated; then
     aptly publish update -force-overwrite stable filesystem:repo:apt
   else
     echo "Publishing new repository..."
-    aptly publish repo apt filesystem:repo:apt
+    aptly publish -distribution="stable" repo apt filesystem:repo:apt
   fi
   echo "Repository updated and published."
 

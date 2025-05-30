@@ -8,12 +8,12 @@ UPDATES_FILE="$(dirname "$(dirname "$0")")/updates.txt"
 
 # List of packages and their GitHub repositories
 declare -A packages=(
-  ["restic"]="https://api.github.com/repos/restic/restic/releases/latest"
-  ["runitor"]="https://api.github.com/repos/bdd/runitor/releases/latest"
-  ["croc"]="https://api.github.com/repos/schollz/croc/releases/latest"
-  ["regclient"]="https://api.github.com/repos/regclient/regclient/releases/latest"
-  ["wgcf"]="https://api.github.com/repos/ViRb3/wgcf/releases/latest"
-  ["yt-dlp"]="https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest"
+  ["restic"]="https://ungh.cc/repos/restic/restic/releases/latest"
+  ["runitor"]="https://ungh.cc/repos/bdd/runitor/releases/latest"
+  ["croc"]="https://ungh.cc/repos/schollz/croc/releases/latest"
+  ["regclient"]="https://ungh.cc/repos/regclient/regclient/releases/latest"
+  ["wgcf"]="https://ungh.cc/repos/ViRb3/wgcf/releases/latest"
+  ["yt-dlp"]="https://ungh.cc/repos/yt-dlp/yt-dlp/releases/latest"
 )
 
 # Read current versions into an associative array
@@ -26,7 +26,7 @@ updated=false
 
 # Check updates for each package
 for pkg in "${!packages[@]}"; do
-  latest_version=$(curl --silent "${packages[$pkg]}" | jq -r '.tag_name' | sed 's/^v//') # Remove 'v' prefix
+  latest_version=$(curl --silent "${packages[$pkg]}" | jq -r '.release.tag' | sed 's/^v//') # Remove 'v' prefix
   if [[ "$latest_version" != "${current_versions[$pkg]}" ]]; then
     echo "Update available for $pkg: ${current_versions[$pkg]} -> $latest_version"
     echo "$pkg" >> "$UPDATES_FILE"

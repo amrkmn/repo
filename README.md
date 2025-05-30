@@ -10,6 +10,7 @@
 
 # Usage
 ```bash
-echo "deb [trusted=yes] https://repo.amar.kim/apt stable main" | sudo tee /etc/apt/sources.list.d/amrkmn.list >/dev/null
+curl -fsSL https://repo.ujol.dev/amrkmn.asc | sudo tee /etc/apt/keyrings/amrkmn.asc > /dev/null
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/amrkmn.asc] https://repo.ujol.dev/apt stable main" | sudo tee /etc/apt/sources.list.d/amrkmn.list
 sudo apt update
 ```

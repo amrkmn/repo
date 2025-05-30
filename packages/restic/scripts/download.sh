@@ -71,7 +71,7 @@ mkdir -p "$RESTIC_DIR"
 
 log "Getting latest version from GitHub API"
 #VERSION=$(curl -s "$GITHUB_REPO" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-VERSION=$(curl -s "$GITHUB_REPO" | grep '"tag":' | sed -E 's/.*"v([^"]+)".*/\1/')
+VERSION=$(curl -s "$GITHUB_REPO" | jq -r '.release.tag' | sed 's/^v//')
 if [ -z "$VERSION" ]; then
     error "Failed to get the version."
 fi

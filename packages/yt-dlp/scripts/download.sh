@@ -79,7 +79,7 @@ mkdir -p "$YTDLP_DIR"
 
 log "Getting latest version from GitHub API"
 #VERSION=$(curl -s "$GITHUB_REPO" | grep '"tag_name":' | sed -E 's/.*"([0-9]+\.[0-9]+\.[0-9]+)".*/\1/')
-VERSION=$(curl -s "$GITHUB_REPO" | grep '"tag":' | sed -E 's/.*"([0-9]+\.[0-9]+\.[0-9]+)".*/\1/')
+VERSION=$(curl -s "$GITHUB_REPO" | jq -r '.release.tag')
 if [ -z "$VERSION" ]; then
     error "Failed to get the version."
 fi
